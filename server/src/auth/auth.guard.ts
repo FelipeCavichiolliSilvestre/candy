@@ -18,13 +18,12 @@ export class AuthGuard implements CanActivate {
     );
     if (allow) return true;
 
-    const jwt = context
-      .switchToHttp()
-      .getRequest()
-      .headers?.authorization?.slice(7);
+    const request = context.switchToHttp().getRequest();
+    const jwt = request.headers?.authorization?.slice(7);
 
     const payload = await this.authService.authenticate(jwt);
     if (!payload) return false;
+    (request as any).user = payload;
 
     const roles = this.reflector.get<EmployeeRole[]>(
       REQUIRED_ROLES_KEY,
