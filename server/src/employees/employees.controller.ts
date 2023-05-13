@@ -9,7 +9,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { IEmployeesService } from "./employees.interface";
-import { Require } from "src/auth";
+import { JwtPayload, Require } from "src/auth";
 import { EmployeeRole } from "@prisma/client";
 import {
   CreateEmployeeBodyDTO,
@@ -17,6 +17,7 @@ import {
   GetEmployeesQueryDTO,
   UpdateEmployeeBodyDTO,
 } from "./dtos";
+import { User } from "src/auth/decorators/user.decorator";
 
 @Controller("/employees")
 export class EmployeesController {
@@ -25,6 +26,11 @@ export class EmployeesController {
   @Get("/")
   async get(@Query() query: GetEmployeesQueryDTO) {
     return await this.employeesService.list(query.page);
+  }
+
+  @Get("/me")
+  async getMe(@User() user: JwtPayload) {
+    return await this.employeesService.findOne(user.id);
   }
 
   @Post("/")

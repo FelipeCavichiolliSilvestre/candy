@@ -68,6 +68,14 @@ export class EmployeesService implements IEmployeesService {
     };
   }
 
+  async findOne(id: number): Promise<SafeEmployee> {
+    // TODO: Handle not found error
+    return await this.prisma.employee.findUniqueOrThrow({
+      where: { id },
+      select: { id: true, username: true, role: true },
+    });
+  }
+
   async remove(id: number): Promise<void> {
     await this.prisma.employee.delete({ where: { id } });
   }
