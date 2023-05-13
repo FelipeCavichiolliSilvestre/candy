@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_DATABASE: 'candy'
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-volume:/var/lib/mysql
+
+volumes:
+  db-volume:
