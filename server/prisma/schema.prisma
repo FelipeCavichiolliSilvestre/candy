@@ -9,7 +9,7 @@ datasource db {
 
 model Employee {
   id           Int          @id @default(autoincrement()) @db.UnsignedSmallInt
-  username     String       @db.VarChar(20)
+  username     String       @unique @db.VarChar(20)
   role         EmployeeRole
   passwordHash String       @map("password_hash") @db.Char(65)
 
@@ -25,7 +25,7 @@ enum EmployeeRole {
 
 model Product {
   id          Int    @id @default(autoincrement()) @db.UnsignedInt
-  name        String @db.VarChar(50)
+  name        String @unique @db.VarChar(50)
   description String @db.TinyText
   price       Float  @db.Float
   quantity    Int    @db.UnsignedTinyInt
