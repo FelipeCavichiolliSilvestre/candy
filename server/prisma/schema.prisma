@@ -43,10 +43,10 @@ model ProductInventoryAdjustment {
   type     AdjustmentType
   date     DateTime       @default(now())
 
-  productId Int @db.UnsignedInt
+  productId Int @map("product_id") @db.UnsignedInt
 
   @@id([productId, date])
-  @@map("product_invetory_adjustments")
+  @@map("product_inventory_adjustments")
 }
 
 enum AdjustmentType {
@@ -81,7 +81,7 @@ model Order {
   items  OrderItem[]
   date   DateTime    @default(now())
 
-  clientId String @db.Char(36)
+  clientId String @map("client_id") @db.Char(36)
 
   @@map("orders")
 }
@@ -91,8 +91,8 @@ model OrderItem {
   product  Product @relation(fields: [productId], references: [id])
   quantity Int     @db.UnsignedTinyInt
 
-  orderId   String @db.Char(36)
-  productId Int    @db.UnsignedInt
+  orderId   String @map("order_id") @db.Char(36)
+  productId Int    @map("product_id") @db.UnsignedInt
 
   @@id([orderId, productId])
   @@map("order_items")
