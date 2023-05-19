@@ -9,6 +9,6 @@ async function bootstrap() {
   app.useGlobalGuards(app.select(AppModule).get(AuthGuard));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.APP_PORT ?? 8080);
 }
 bootstrap();
