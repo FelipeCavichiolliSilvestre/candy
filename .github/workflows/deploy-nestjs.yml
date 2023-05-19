@@ -1,0 +1,64 @@
+name: Deploy NestJS to Azure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "server/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+
+      - name: Install and build
+        run: |
+          cd server
+          npm install
+          npm run build
+
+      - name: Zip all files for artifact upload
+        run: |
+          cd server
+          zip --symlinks -r ../nest.zip ./*
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: nest-app
+          path: nest.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: "production"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: nest-app
+
+      - name: Login with Azure credentials
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "felipe-candy"
+          slot-name: "production"
+          package: nest.zip
