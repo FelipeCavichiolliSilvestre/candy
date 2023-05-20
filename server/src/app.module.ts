@@ -5,6 +5,7 @@ import { EmployeesModule } from "./employees";
 import { OrdersModule } from "./orders";
 import { PrismaModule } from "./prisma";
 import { ProductsModule } from "./products";
+import { WhatsappModule } from "./whatsapp/whatsapp.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductsModule } from "./products";
     EmployeesModule,
     OrdersModule,
     ProductsModule,
+    WhatsappModule,
   ],
 })
 export class AppModule {}
