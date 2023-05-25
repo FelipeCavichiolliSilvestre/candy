@@ -97,9 +97,3 @@ model OrderItem {
   @@id([orderId, productId])
   @@map("order_items")
 }
-
-model WhatsappHooks {
-  id      Int      @id @default(autoincrement())
-  date    DateTime @default(now())
-  content Json
-}
