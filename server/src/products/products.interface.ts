@@ -35,5 +35,5 @@ export type UpdateProductPriceInput = {
 
 export type ListProductsOutput = {
   products: Product[];
-  hasNextPage: number;
+  hasNextPage: boolean;
 };
