@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -52,7 +53,8 @@ export class EmployeesController {
 
   @Delete("/:id")
   @Require(EmployeeRole.COOK)
+  @HttpCode(204)
   async delete(@Param() param: EmployeeIdParamDTO) {
-    return await this.employeesService.remove(param.id);
+    await this.employeesService.remove(param.id);
   }
 }
