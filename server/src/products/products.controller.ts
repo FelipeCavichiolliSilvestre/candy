@@ -10,8 +10,10 @@ import {
 } from "./dtos";
 import { Require } from "src/auth";
 import { EmployeeRole } from "@prisma/client";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller("/products")
+@ApiTags("products")
 export class ProductsController {
   constructor(private productsService: IProductsService) {}
 

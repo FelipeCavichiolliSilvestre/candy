@@ -18,7 +18,9 @@ import {
   UpdateEmployeeBodyDTO,
 } from "./dtos";
 import { User } from "src/auth/decorators/user.decorator";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("employees")
 @Controller("/employees")
 export class EmployeesController {
   constructor(private employeesService: IEmployeesService) {}
