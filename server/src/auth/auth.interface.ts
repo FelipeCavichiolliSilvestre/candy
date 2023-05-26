@@ -15,6 +15,6 @@ export type LoginOutput = Omit<Employee | Client, "passwordHash"> & {
 };
 
 export type JwtPayload = {
-  id: number;
+  id: string;
   role: UsersRole;
 };

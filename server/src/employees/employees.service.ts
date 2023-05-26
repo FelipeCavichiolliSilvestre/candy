@@ -30,11 +30,11 @@ export class EmployeesService implements IEmployeesService {
   }
 
   async update(data: UpdateEmployeeInput): Promise<SafeEmployee> {
-    const { id, username, password, role } = data;
+    const { employeeId, username, password, role } = data;
 
     // TODO: Handle unique constraint error
     const newEmployee = await this.prisma.employee.update({
-      where: { id },
+      where: { id: employeeId },
       data: {
         username,
         passwordHash: await this.hasher.hashPassword(password),
@@ -64,15 +64,15 @@ export class EmployeesService implements IEmployeesService {
     };
   }
 
-  async findOne(id: number): Promise<SafeEmployee> {
+  async findOne(employeeId: string): Promise<SafeEmployee> {
     // TODO: Handle not found error
     return await this.prisma.employee.findUniqueOrThrow({
-      where: { id },
+      where: { id: employeeId },
       select: { id: true, username: true, role: true },
     });
   }
 
-  async remove(id: number): Promise<void> {
-    await this.prisma.employee.delete({ where: { id } });
+  async remove(employeeId: string): Promise<void> {
+    await this.prisma.employee.delete({ where: { id: employeeId } });
   }
 }

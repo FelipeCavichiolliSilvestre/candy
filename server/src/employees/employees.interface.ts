@@ -7,8 +7,8 @@ export abstract class IEmployeesService {
   abstract register(data: RegisterEmployeeInput): Promise<SafeEmployee>;
   abstract update(data: UpdateEmployeeInput): Promise<SafeEmployee>;
   abstract list(page?: number): Promise<ListEmployeesOutput>;
-  abstract findOne(id: number): Promise<SafeEmployee>;
-  abstract remove(id: number): Promise<void>;
+  abstract findOne(id: string): Promise<SafeEmployee>;
+  abstract remove(id: string): Promise<void>;
 }
 
 export type RegisterEmployeeInput = {
@@ -18,7 +18,7 @@ export type RegisterEmployeeInput = {
 };
 
 export type UpdateEmployeeInput = Partial<RegisterEmployeeInput> & {
-  id: number;
+  employeeId: string;
 };
 
 export type ListEmployeesOutput = {

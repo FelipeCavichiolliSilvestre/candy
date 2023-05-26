@@ -42,7 +42,7 @@ export class EmployeesController {
     return await this.employeesService.register(body);
   }
 
-  @Patch("/:id")
+  @Patch("/:employeeId")
   @Require(UsersRole.COOK)
   async update(
     @Param() param: EmployeeIdParamDTO,
@@ -51,10 +51,10 @@ export class EmployeesController {
     return await this.employeesService.update({ ...body, ...param });
   }
 
-  @Delete("/:id")
+  @Delete("/:employeeId")
   @Require(UsersRole.COOK)
   @HttpCode(204)
   async delete(@Param() param: EmployeeIdParamDTO) {
-    await this.employeesService.remove(param.id);
+    await this.employeesService.remove(param.employeeId);
   }
 }

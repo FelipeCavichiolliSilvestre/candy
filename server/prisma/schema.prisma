@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Employee {
-  id           Int          @id @default(autoincrement()) @db.UnsignedSmallInt
+  id           String       @id @default(uuid()) @db.Char(36)
   username     String       @unique @db.VarChar(20)
   role         EmployeeRole
   passwordHash String       @map("password_hash") @db.Char(65)
