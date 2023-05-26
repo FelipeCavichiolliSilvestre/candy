@@ -1,22 +1,55 @@
-import { Controller, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { IProductsService } from "./products.interface";
+import {
+  CreateProductBodyDTO,
+  GetProductsQueryDTO,
+  ProductIdParamDTO,
+  UpdateProductInfoBodyDTO,
+  UpdateProductPriceDTO,
+  UpdateProductQuantityDTO,
+} from "./dtos";
+import { Require } from "src/auth";
+import { EmployeeRole } from "@prisma/client";
 
 @Controller("/products")
 export class ProductsController {
   constructor(private productsService: IProductsService) {}
 
   @Get("/")
-  async getProduct() {}
+  async getProduct(@Query() query: GetProductsQueryDTO) {
+    return await this.productsService.list(query.page);
+  }
 
   @Post("/")
-  async createProduct() {}
+  @Require(EmployeeRole.COOK)
+  async createProduct(@Body() body: CreateProductBodyDTO) {
+    await this.productsService.register(body);
+  }
 
   @Put("/:productId/info")
-  async updateProductInfo() {}
+  @Require(EmployeeRole.COOK)
+  async updateProductInfo(
+    @Param() param: ProductIdParamDTO,
+    @Body() body: UpdateProductInfoBodyDTO
+  ) {
+    await this.productsService.updateInfo({ ...param, ...body });
+  }
 
   @Put("/:productId/price")
-  async updateProductPrice() {}
+  @Require(EmployeeRole.COOK)
+  async updateProductPrice(
+    @Param() param: ProductIdParamDTO,
+    @Body() body: UpdateProductPriceDTO
+  ) {
+    await this.productsService.updatePrice({ ...param, ...body });
+  }
 
   @Put("/:productId/quantity")
-  async updateProductQuantity() {}
+  @Require(EmployeeRole.COOK)
+  async updateProductQuantity(
+    @Param() param: ProductIdParamDTO,
+    @Body() body: UpdateProductQuantityDTO
+  ) {
+    await this.productsService.updateStock({ ...param, ...body });
+  }
 }
