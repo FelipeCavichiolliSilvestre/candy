@@ -7,15 +7,11 @@ import {
   UpdateEmployeeInput,
 } from "./employees.interface";
 import { SafeEmployee } from "./safe-employee.type";
-import * as bcrypt from "bcrypt";
-import { ConfigService } from "@nestjs/config";
+import { HashService } from "src/auth/hash.service";
 
 @Injectable()
 export class EmployeesService implements IEmployeesService {
-  constructor(
-    private prisma: PrismaService,
-    private configService: ConfigService
-  ) {}
+  constructor(private prisma: PrismaService, private hasher: HashService) {}
 
   async register(data: RegisterEmployeeInput): Promise<SafeEmployee> {
     const { username, password, role } = data;
@@ -24,7 +20,7 @@ export class EmployeesService implements IEmployeesService {
     const newEmployee = await this.prisma.employee.create({
       data: {
         username,
-        passwordHash: await this.hash(password),
+        passwordHash: await this.hasher.hashPassword(password),
         role,
       },
       select: { id: true, role: true, username: true },
@@ -41,7 +37,7 @@ export class EmployeesService implements IEmployeesService {
       where: { id },
       data: {
         username,
-        passwordHash: await this.hash(password),
+        passwordHash: await this.hasher.hashPassword(password),
         role,
       },
       select: { id: true, role: true, username: true },
@@ -78,19 +74,5 @@ export class EmployeesService implements IEmployeesService {
 
   async remove(id: number): Promise<void> {
     await this.prisma.employee.delete({ where: { id } });
-  }
-
-  private hash(password: string): Promise<string>;
-  private hash(password: undefined): Promise<undefined>;
-  private hash(password: string | undefined): Promise<string | undefined>;
-  private async hash(
-    password: string | undefined
-  ): Promise<string | undefined> {
-    if (!password) return undefined;
-
-    return await bcrypt.hash(
-      password,
-      Number(this.configService.getOrThrow("SALT_ROUNDS"))
-    );
   }
 }
