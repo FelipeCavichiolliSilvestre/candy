@@ -9,8 +9,8 @@ import {
   UpdateProductQuantityDTO,
 } from "./dtos";
 import { Require } from "src/auth";
-import { EmployeeRole } from "@prisma/client";
 import { ApiTags } from "@nestjs/swagger";
+import { UsersRole } from "src/auth/types";
 
 @Controller("/products")
 @ApiTags("products")
@@ -23,13 +23,13 @@ export class ProductsController {
   }
 
   @Post("/")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async createProduct(@Body() body: CreateProductBodyDTO) {
     await this.productsService.register(body);
   }
 
   @Put("/:productId/info")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async updateProductInfo(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductInfoBodyDTO
@@ -38,7 +38,7 @@ export class ProductsController {
   }
 
   @Put("/:productId/price")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async updateProductPrice(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductPriceDTO
@@ -47,7 +47,7 @@ export class ProductsController {
   }
 
   @Put("/:productId/quantity")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async updateProductQuantity(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductQuantityDTO

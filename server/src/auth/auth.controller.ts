@@ -9,9 +9,17 @@ import { ApiTags } from "@nestjs/swagger";
 export class AuthController {
   constructor(private authService: IAuthService) {}
 
-  @Post("/login")
+  @ApiTags("employees")
+  @Post("/employee/login")
   @AllowUnauthenticated()
-  async login(@Body() body: LoginBodyDTO) {
-    return this.authService.login(body.username, body.password);
+  async employeeLogin(@Body() body: LoginBodyDTO) {
+    return this.authService.login(body.username, body.password, "employee");
+  }
+
+  @ApiTags("clients")
+  @Post("/client/login")
+  @AllowUnauthenticated()
+  async clientLogin(@Body() body: LoginBodyDTO) {
+    return this.authService.login(body.username, body.password, "client");
   }
 }

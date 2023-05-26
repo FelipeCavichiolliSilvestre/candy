@@ -11,7 +11,6 @@ import {
 } from "@nestjs/common";
 import { IEmployeesService } from "./employees.interface";
 import { JwtPayload, Require } from "src/auth";
-import { EmployeeRole } from "@prisma/client";
 import {
   CreateEmployeeBodyDTO,
   EmployeeIdParamDTO,
@@ -20,6 +19,7 @@ import {
 } from "./dtos";
 import { User } from "src/auth/decorators/user.decorator";
 import { ApiTags } from "@nestjs/swagger";
+import { UsersRole } from "src/auth/types";
 
 @ApiTags("employees")
 @Controller("/employees")
@@ -37,13 +37,13 @@ export class EmployeesController {
   }
 
   @Post("/")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async create(@Body() body: CreateEmployeeBodyDTO) {
     return await this.employeesService.register(body);
   }
 
   @Patch("/:id")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   async update(
     @Param() param: EmployeeIdParamDTO,
     @Body() body: UpdateEmployeeBodyDTO
@@ -52,7 +52,7 @@ export class EmployeesController {
   }
 
   @Delete("/:id")
-  @Require(EmployeeRole.COOK)
+  @Require(UsersRole.COOK)
   @HttpCode(204)
   async delete(@Param() param: EmployeeIdParamDTO) {
     await this.employeesService.remove(param.id);

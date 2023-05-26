@@ -4,31 +4,55 @@ import { PrismaService } from "src/prisma";
 import { JwtService } from "@nestjs/jwt";
 
 import * as bcrypt from "bcrypt";
+import { UsersRole } from "./types";
+import { Employee } from "@prisma/client";
 
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   // TODO: Handle errors
-  async login(username: string, password: string): Promise<LoginOutput> {
-    const employee = await this.prisma.employee.findUnique({
-      where: { username },
-    });
-    if (employee === null) throw new Error("User not found");
+  async login(
+    username: string,
+    password: string,
+    type: "client" | "employee"
+  ): Promise<LoginOutput> {
+    const isClient = type === "client";
 
-    const passwordMatches = await bcrypt.compare(
-      password,
-      employee.passwordHash
-    );
+    const user = isClient
+      ? await this.findClient(username)
+      : await this.findEmployee(username);
+    if (user === null) throw new Error("User not found");
+
+    const passwordMatches = await bcrypt.compare(password, user.passwordHash);
     if (!passwordMatches) throw new Error("Passwords don't match");
 
     const jwt = await this.jwtService.signAsync(
-      { id: employee.id, role: employee.role } as JwtPayload,
+      {
+        id: user.id,
+        role: isClient ? UsersRole.CLIENT : (user as Employee).role,
+      } as JwtPayload,
       { expiresIn: "7d" }
     );
 
-    const { passwordHash, ...safeEmployee } = employee;
-    return { ...safeEmployee, jwt };
+    const { passwordHash, ...safeUser } = user;
+    return { ...safeUser, jwt };
+  }
+
+  private async findEmployee(username: string) {
+    const employee = await this.prisma.employee.findUnique({
+      where: { username },
+    });
+
+    return employee;
+  }
+
+  private async findClient(username: string) {
+    const employee = await this.prisma.client.findUnique({
+      where: { username },
+    });
+
+    return employee;
   }
 
   async authenticate(jwt: string): Promise<JwtPayload | null> {
