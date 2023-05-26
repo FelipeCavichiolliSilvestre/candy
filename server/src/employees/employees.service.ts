@@ -90,7 +90,7 @@ export class EmployeesService implements IEmployeesService {
 
     return await bcrypt.hash(
       password,
-      this.configService.getOrThrow("SALT_ROUNDS")
+      Number(this.configService.getOrThrow("SALT_ROUNDS"))
     );
   }
 }
