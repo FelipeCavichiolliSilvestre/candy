@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AuthModule } from "./auth";
+import { ClientsModule } from "./clients";
 import { EmployeesModule } from "./employees";
 import { OrdersModule } from "./orders";
 import { PrismaModule } from "./prisma";
@@ -17,6 +18,7 @@ import { join } from "path";
     }),
     PrismaModule,
     AuthModule,
+    ClientsModule,
     EmployeesModule,
     OrdersModule,
     ProductsModule,
