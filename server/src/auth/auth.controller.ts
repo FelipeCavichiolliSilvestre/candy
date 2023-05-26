@@ -10,14 +10,14 @@ export class AuthController {
   constructor(private authService: IAuthService) {}
 
   @ApiTags("employees")
-  @Post("/employee/login")
+  @Post("/employees/login")
   @AllowUnauthenticated()
   async employeeLogin(@Body() body: LoginBodyDTO) {
     return this.authService.login(body.username, body.password, "employee");
   }
 
   @ApiTags("clients")
-  @Post("/client/login")
+  @Post("/clients/login")
   @AllowUnauthenticated()
   async clientLogin(@Body() body: LoginBodyDTO) {
     return this.authService.login(body.username, body.password, "client");
