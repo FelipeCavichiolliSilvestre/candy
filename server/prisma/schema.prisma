@@ -33,6 +33,7 @@ model Product {
   priceHistory         ProductPriceHistory[]
   orders               OrderItem[]
   inventoryAdjustments ProductInventoryAdjustment[]
+  itemOf               CartItem[]
 
   @@map("products")
 }
@@ -69,14 +70,27 @@ model ProductPriceHistory {
 }
 
 model Client {
-  id           String  @id @default(uuid()) @db.Char(36)
-  username     String  @unique @db.VarChar(60)
-  email        String  @unique
-  phoneNumber  String  @db.Char(11)
-  passwordHash String  @map("password_hash") @db.Char(65)
+  id           String     @id @default(uuid()) @db.Char(36)
+  username     String     @unique @db.VarChar(60)
+  email        String     @unique
+  phoneNumber  String     @map("phone_number") @db.Char(11)
+  passwordHash String     @map("password_hash") @db.Char(65)
   orders       Order[]
+  cartItems    CartItem[]
 
   @@map("clients")
+}
+
+model CartItem {
+  client   Client  @relation(fields: [clientId], references: [id])
+  product  Product @relation(fields: [productId], references: [id])
+  quantity Int
+
+  productId Int    @map("product_id") @db.UnsignedInt
+  clientId  String @map("client_id") @db.Char(36)
+
+  @@id([productId, clientId])
+  @@map("cart_items")
 }
 
 model Order {
