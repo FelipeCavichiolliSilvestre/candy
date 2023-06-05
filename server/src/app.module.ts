@@ -8,6 +8,7 @@ import { EmployeesModule } from "./employees";
 import { OrdersModule } from "./orders";
 import { PrismaModule } from "./prisma";
 import { ProductsModule } from "./products";
+import { StripeModule } from "./stripe";
 import { join } from "path";
 
 @Module({
@@ -24,6 +25,7 @@ import { join } from "path";
     EmployeesModule,
     OrdersModule,
     ProductsModule,
+    StripeModule,
   ],
 })
 export class AppModule {}
