@@ -94,14 +94,22 @@ model CartItem {
 }
 
 model Order {
-  id     String      @id @default(uuid()) @db.Char(36)
-  client Client      @relation(fields: [clientId], references: [id])
-  items  OrderItem[]
-  date   DateTime    @default(now())
+  id      String      @id @default(uuid()) @db.Char(36)
+  client  Client      @relation(fields: [clientId], references: [id])
+  items   OrderItem[]
+  date    DateTime    @default(now())
+  status  OrderStatus
+  address String
 
   clientId String @map("client_id") @db.Char(36)
 
   @@map("orders")
+}
+
+enum OrderStatus {
+  PAYMENT_REQUIRED
+  CANCELED
+  EXPIRED
 }
 
 model OrderItem {
