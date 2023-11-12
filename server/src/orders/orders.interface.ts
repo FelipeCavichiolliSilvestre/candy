@@ -1,1 +1,3 @@
-export abstract class IOrdersService {}
+export abstract class IOrdersService {
+  abstract confirmPayment(orderId: string): Promise<void>;
+}

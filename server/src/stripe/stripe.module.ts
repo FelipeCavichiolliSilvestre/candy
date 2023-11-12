@@ -3,9 +3,11 @@ import { ConfigService } from "@nestjs/config";
 import Stripe from "stripe";
 import { StripeService } from "./stripe.service";
 import { StripeController } from "./stripe.controller";
+import { OrdersModule } from "../orders";
 
 @Global()
 @Module({
+  imports: [OrdersModule],
   controllers: [StripeController],
   providers: [
     {

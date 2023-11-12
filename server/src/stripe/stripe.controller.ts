@@ -11,6 +11,7 @@ import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 import { AllowUnauthenticated } from "src/auth";
 import { StripeService } from "./stripe.service";
+import { IOrdersService } from "../orders";
 
 @Controller("/stripe")
 export class StripeController {
@@ -18,7 +19,8 @@ export class StripeController {
 
   constructor(
     private stripeService: StripeService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private ordersService: IOrdersService
   ) {}
 
   @Post("/webhooks")
@@ -31,8 +33,13 @@ export class StripeController {
       throw new Error("Request object should contain rawBody property");
 
     const event = this.validateEvent(req.rawBody, signature);
-
     this.logger.log(`Receive an ${event.type} event with id ${event.id}`);
+
+    if (event.type === "checkout.session.completed") {
+      await this.ordersService.confirmPayment(
+        event.data.object["client_reference_id"]
+      );
+    }
   }
 
   private validateEvent(rawBody: Buffer, signature: string) {

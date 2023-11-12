@@ -6,5 +6,6 @@ import { OrdersService } from "./orders.service";
 @Module({
   controllers: [OrdersController],
   providers: [{ provide: IOrdersService, useClass: OrdersService }],
+  exports: [IOrdersService],
 })
 export class OrdersModule {}
