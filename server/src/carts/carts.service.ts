@@ -6,11 +6,10 @@ import {
   ICartsService,
   UpdateCartItemInput,
 } from "./carts.interface";
-import { StripeService } from "src/stripe";
 
 @Injectable()
 export class CartsService implements ICartsService {
-  constructor(private prisma: PrismaService, private stripe: StripeService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getClientCart(data: GetUserCartInput): Promise<GetUserCartOutput> {
     const { clientId } = data;
@@ -44,4 +43,3 @@ export class CartsService implements ICartsService {
     });
   }
 }
-
