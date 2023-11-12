@@ -110,6 +110,7 @@ enum OrderStatus {
   PAYMENT_REQUIRED
   CANCELED
   EXPIRED
+  PAID
 }
 
 model OrderItem {

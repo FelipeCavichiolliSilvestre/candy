@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AuthModule } from "./auth";
 import { CartsModule } from "./carts";
+import { CheckoutModule } from "./checkout";
 import { ClientsModule } from "./clients";
 import { EmployeesModule } from "./employees";
 import { OrdersModule } from "./orders";
@@ -21,6 +22,7 @@ import { join } from "path";
     PrismaModule,
     AuthModule,
     CartsModule,
+    CheckoutModule,
     ClientsModule,
     EmployeesModule,
     OrdersModule,
