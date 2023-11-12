@@ -13,10 +13,10 @@ import { HashService } from "src/auth/hash.service";
 export class EmployeesService implements IEmployeesService {
   constructor(private prisma: PrismaService, private hasher: HashService) {}
 
+  // TODO: Handle unique constraint error
   async register(data: RegisterEmployeeInput): Promise<SafeEmployee> {
     const { username, password, role } = data;
 
-    // TODO: Handle unique constraint error
     const newEmployee = await this.prisma.employee.create({
       data: {
         username,
@@ -29,10 +29,10 @@ export class EmployeesService implements IEmployeesService {
     return newEmployee;
   }
 
+  // TODO: Handle unique constraint error
   async update(data: UpdateEmployeeInput): Promise<SafeEmployee> {
     const { employeeId, username, password, role } = data;
 
-    // TODO: Handle unique constraint error
     const newEmployee = await this.prisma.employee.update({
       where: { id: employeeId },
       data: {
@@ -64,8 +64,8 @@ export class EmployeesService implements IEmployeesService {
     };
   }
 
+  // TODO: Handle not found error
   async findOne(employeeId: string): Promise<SafeEmployee> {
-    // TODO: Handle not found error
     return await this.prisma.employee.findUniqueOrThrow({
       where: { id: employeeId },
       select: { id: true, username: true, role: true },

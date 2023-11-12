@@ -7,6 +7,7 @@ import { HashService } from "src/auth";
 export class ClientsService implements IClientsService {
   constructor(private prisma: PrismaService, private hasher: HashService) {}
 
+  // TODO: Handle unique constraint error
   async signUp(data: SignUpInput): Promise<void> {
     const { email, password, phoneNumber, username } = data;
 

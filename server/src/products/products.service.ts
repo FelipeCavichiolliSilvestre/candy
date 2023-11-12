@@ -14,6 +14,7 @@ import { AdjustmentType, Product } from "@prisma/client";
 export class ProductsService implements IProductsService {
   constructor(private prisma: PrismaService) {}
 
+  // TODO: Handle unique constraint error
   async register(data: RegisterProductInput): Promise<Product> {
     const { name, price, description } = data;
 
@@ -34,6 +35,7 @@ export class ProductsService implements IProductsService {
     };
   }
 
+  // TODO: Handle unique constraint error
   async updateInfo(data: UpdateProductInfoInput): Promise<Product> {
     const { productId, name, description } = data;
 

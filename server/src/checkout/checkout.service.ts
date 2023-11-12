@@ -13,6 +13,7 @@ import { StripeService } from "../stripe";
 export class CheckoutService implements ICheckoutService {
   constructor(private prisma: PrismaService, private stripe: StripeService) {}
 
+  // TODO: Handle value out of range error from inventory trigger
   async checkoutCart(data: CheckoutCartInput): Promise<CheckoutOutput> {
     const { clientId, address } = data;
 
@@ -76,6 +77,7 @@ export class CheckoutService implements ICheckoutService {
     return { orderId: order.id, checkoutLink: checkout.url };
   }
 
+  // TODO: Handle not found error and add order status check
   async checkoutOrder(data: CheckoutOrderInput): Promise<CheckoutOutput> {
     const { orderId } = data;
 
@@ -148,7 +150,7 @@ export class CheckoutService implements ICheckoutService {
         customer_email: clientEmail,
         client_reference_id: order.id,
         mode: "payment",
-        success_url: "http://localhost:8080/UwU",
+        success_url: "http://localhost:8080/UwU", // TODO: Add frontend url environment variable
       },
       { idempotencyKey: order.id }
     );

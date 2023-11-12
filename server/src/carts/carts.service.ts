@@ -25,6 +25,7 @@ export class CartsService implements ICartsService {
     }));
   }
 
+  // TODO: Handle not found error
   async updateCartItem(data: UpdateCartItemInput): Promise<void> {
     const { clientId, productId, quantity } = data;
 
