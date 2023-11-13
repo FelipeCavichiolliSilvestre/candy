@@ -8,6 +8,7 @@ import {
 import { OrderStatus } from "@prisma/client";
 import { PrismaService } from "../prisma";
 import { StripeService } from "../stripe";
+import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class CheckoutService implements ICheckoutService {
@@ -154,6 +155,20 @@ export class CheckoutService implements ICheckoutService {
       },
       { idempotencyKey: order.id }
     );
+  }
+
+  @Cron("0 * * * * *")
+  async expireOrders() {
+    const thirtyMinutesAgo = new Date();
+    thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 30);
+
+    await this.prisma.order.updateMany({
+      where: {
+        status: OrderStatus.PAYMENT_REQUIRED,
+        date: { lte: thirtyMinutesAgo },
+      },
+      data: { status: OrderStatus.EXPIRED },
+    });
   }
 }
 

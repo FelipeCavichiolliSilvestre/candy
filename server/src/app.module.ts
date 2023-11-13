@@ -11,6 +11,7 @@ import { PrismaModule } from "./prisma";
 import { ProductsModule } from "./products";
 import { StripeModule } from "./stripe";
 import { join } from "path";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { join } from "path";
       rootPath: join(__dirname, "..", "static"),
       serveRoot: "/docs",
     }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     AuthModule,
     CartsModule,
