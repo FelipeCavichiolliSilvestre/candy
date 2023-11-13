@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from "@nestjs/common";
 import { IProductsService } from "./products.interface";
 import {
   CreateProductBodyDTO,
@@ -8,7 +17,7 @@ import {
   UpdateProductPriceDTO,
   UpdateProductQuantityDTO,
 } from "./dtos";
-import { Require } from "src/auth";
+import { AllowUnauthenticated, Require } from "src/auth";
 import { ApiTags } from "@nestjs/swagger";
 import { UsersRole } from "src/auth/types";
 
@@ -18,8 +27,15 @@ export class ProductsController {
   constructor(private productsService: IProductsService) {}
 
   @Get("/")
-  async getProduct(@Query() query: GetProductsQueryDTO) {
+  @AllowUnauthenticated()
+  async listProducts(@Query() query: GetProductsQueryDTO) {
     return await this.productsService.list(query.page);
+  }
+
+  @Get("/:productId")
+  @AllowUnauthenticated()
+  async getProduct(@Param("productId", ParseIntPipe) productId: number) {
+    return await this.productsService.getOne(productId);
   }
 
   @Post("/")

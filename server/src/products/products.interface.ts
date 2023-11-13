@@ -8,6 +8,7 @@ export abstract class IProductsService {
   abstract updateStock(data: UpdateProductStockInput): Promise<Product>;
   abstract updatePrice(data: UpdateProductPriceInput): Promise<Product>;
   abstract list(page?: number): Promise<ListProductsOutput>;
+  abstract getOne(productId: number): Promise<Product>;
 }
 
 export type RegisterProductInput = {

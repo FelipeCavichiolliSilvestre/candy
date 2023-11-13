@@ -129,4 +129,10 @@ export class ProductsService implements IProductsService {
       hasNextPage: products.length === 11,
     };
   }
+
+  async getOne(productId: number): Promise<Product> {
+    return this.prisma.product.findUniqueOrThrow({
+      where: { id: productId },
+    });
+  }
 }
