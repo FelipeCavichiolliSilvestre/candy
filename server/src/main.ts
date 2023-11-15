@@ -22,9 +22,14 @@ function setupSwagger(app: INestApplication) {
     .setTitle("Candy API")
     .setDescription("The ecommerce candy API description")
     .setVersion("0.0.1")
+    .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, swagger);
+  const document = SwaggerModule.createDocument(app, swagger, {
+    operationIdFactory(controllerKey, methodKey) {
+      return methodKey;
+    },
+  });
 
   if (!existsSync("./static")) mkdirSync("./static");
   writeFileSync("./static/api.json", JSON.stringify(document));
