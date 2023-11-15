@@ -5,12 +5,21 @@ export abstract class IAuthService {
   abstract login(
     username: string,
     password: string,
-    type: "client" | "employee"
-  ): Promise<LoginOutput>;
+    type: "client"
+  ): Promise<LoginOutput<Client>>;
+  abstract login(
+    username: string,
+    password: string,
+    type: "employee"
+  ): Promise<LoginOutput<Employee>>;
+
   abstract authenticate(jwt: string): Promise<JwtPayload | null>;
 }
 
-export type LoginOutput = Omit<Employee | Client, "passwordHash"> & {
+export type LoginOutput<User extends Employee | Client> = Omit<
+  User,
+  "passwordHash"
+> & {
   jwt: string;
 };
 

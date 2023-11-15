@@ -5,18 +5,28 @@ import { JwtService } from "@nestjs/jwt";
 
 import * as bcrypt from "bcrypt";
 import { UsersRole } from "./types";
-import { Employee } from "@prisma/client";
+import { Client, Employee } from "@prisma/client";
 
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   // TODO: Handle errors
+  login(
+    username: string,
+    password: string,
+    type: "client"
+  ): Promise<LoginOutput<Client>>;
+  login(
+    username: string,
+    password: string,
+    type: "employee"
+  ): Promise<LoginOutput<Employee>>;
   async login(
     username: string,
     password: string,
     type: "client" | "employee"
-  ): Promise<LoginOutput> {
+  ): Promise<LoginOutput<Client | Employee>> {
     const isClient = type === "client";
 
     const user = isClient
