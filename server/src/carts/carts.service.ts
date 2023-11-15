@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma";
 import {
-  GetUserCartInput,
-  GetUserCartOutput,
+  GetClientCartOutput,
   ICartsService,
   UpdateCartItemInput,
 } from "./carts.interface";
@@ -11,9 +10,7 @@ import {
 export class CartsService implements ICartsService {
   constructor(private prisma: PrismaService) {}
 
-  async getClientCart(data: GetUserCartInput): Promise<GetUserCartOutput> {
-    const { clientId } = data;
-
+  async getClientCart(clientId: string): Promise<GetClientCartOutput> {
     const items = await this.prisma.cartItem.findMany({
       where: { clientId },
       select: { product: true, quantity: true },

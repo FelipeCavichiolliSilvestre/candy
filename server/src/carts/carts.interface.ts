@@ -1,15 +1,11 @@
 import { Product } from "@prisma/client";
 
 export abstract class ICartsService {
-  abstract getClientCart(data: GetUserCartInput): Promise<GetUserCartOutput>;
+  abstract getClientCart(clientId: string): Promise<GetClientCartOutput>;
   abstract updateCartItem(data: UpdateCartItemInput): Promise<void>;
 }
 
-export type GetUserCartInput = {
-  clientId: string;
-};
-
-export type GetUserCartOutput = {
+export type GetClientCartOutput = {
   product: Product;
   quantityOrdered: number;
 }[];

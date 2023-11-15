@@ -1,22 +1,27 @@
 import { Body, Controller, Get, Patch } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { ICartsService } from "./carts.interface";
 import { JwtPayload, Require } from "src/auth";
 import { UsersRole } from "src/auth/types";
-import { User } from "src/auth/decorators/user.decorator";
+import { User } from "src/auth/decorators";
 import { UpdateClientBodyDTO } from "./dtos";
+import { GetClientCartResponseDTO } from "./dtos/get-client-cart.dto";
 
-@ApiTags("cart")
 @Controller("/")
+@ApiTags("cart")
+@ApiBearerAuth()
 export class CartsController {
   constructor(private cartsService: ICartsService) {}
 
   @Get("/clients/me/cart")
   @Require(UsersRole.CLIENT)
-  async getUserCart(@User() user: JwtPayload) {
-    return await this.cartsService.getClientCart({ clientId: user.id });
+  async getClientCart(
+    @User() user: JwtPayload
+  ): Promise<GetClientCartResponseDTO[]> {
+    return await this.cartsService.getClientCart(user.id);
   }
 
+  // TODO: Make cart update accept multiple products
   @Patch("/clients/me/cart")
   @Require(UsersRole.CLIENT)
   async updateUserCart(
