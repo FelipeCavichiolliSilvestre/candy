@@ -12,8 +12,10 @@ import { Request } from "express";
 import { AllowUnauthenticated } from "src/auth";
 import { StripeService } from "./stripe.service";
 import { IOrdersService } from "../orders";
+import { ApiExcludeController } from "@nestjs/swagger";
 
 @Controller("/stripe")
+@ApiExcludeController()
 export class StripeController {
   private logger = new Logger(StripeController.name);
 
