@@ -1,22 +1,23 @@
 import { Body, Controller, Param, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { ICheckoutService } from "./checkout.interface";
 import { JwtPayload, Require } from "src/auth";
 import { UsersRole } from "src/auth/types";
 import { User } from "src/auth/decorators/user.decorator";
-import { CheckoutCartBodyDTO } from "./dtos";
+import { CheckoutCartBodyDTO, CheckoutResponseDTO } from "./dtos";
 
-@ApiTags("checkout", "cart", "orders")
 @Controller("/")
+@ApiTags("orders")
+@ApiBearerAuth()
 export class CheckoutController {
   constructor(private checkoutService: ICheckoutService) {}
 
-  @Post("/clients/me/checkout")
+  @Post("/checkout")
   @Require(UsersRole.CLIENT)
   async checkoutCart(
     @Body() body: CheckoutCartBodyDTO,
     @User() user: JwtPayload
-  ) {
+  ): Promise<CheckoutResponseDTO> {
     return await this.checkoutService.checkoutCart({
       address: body.address,
       clientId: user.id,
@@ -25,7 +26,9 @@ export class CheckoutController {
 
   @Post("/orders/:orderId/checkout")
   @Require(UsersRole.CLIENT)
-  async checkoutOrder(@Param("orderId") orderId: string) {
+  async checkoutOrder(
+    @Param("orderId") orderId: string
+  ): Promise<CheckoutResponseDTO> {
     return await this.checkoutService.checkoutOrder({
       orderId,
     });
