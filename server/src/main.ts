@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
+  app.enableCors({ origin: true });
 
   app.useGlobalGuards(app.select(AppModule).get(AuthGuard));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
