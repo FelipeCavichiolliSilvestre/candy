@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { IsEnum, IsString, Length } from "class-validator";
 import { EmployeeRole } from "@prisma/client";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateEmployeeBodyDTO {
   @Type(() => String)
@@ -15,5 +16,6 @@ export class CreateEmployeeBodyDTO {
 
   @Type(() => String)
   @IsEnum(EmployeeRole)
+  @ApiProperty({ type: "string", enum: EmployeeRole })
   public readonly role: EmployeeRole;
 }

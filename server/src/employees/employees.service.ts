@@ -66,7 +66,7 @@ export class EmployeesService implements IEmployeesService {
 
   // TODO: Handle not found error
   async findOne(employeeId: string): Promise<SafeEmployee> {
-    return await this.prisma.employee.findUniqueOrThrow({
+    return this.prisma.employee.findUniqueOrThrow({
       where: { id: employeeId },
       select: { id: true, username: true, role: true },
     });
