@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -12,14 +14,16 @@ import { IProductsService } from "./products.interface";
 import {
   CreateProductBodyDTO,
   GetProductsQueryDTO,
+  GetProductsResponseDTO,
   ProductIdParamDTO,
   UpdateProductInfoBodyDTO,
   UpdateProductPriceDTO,
   UpdateProductQuantityDTO,
 } from "./dtos";
 import { AllowUnauthenticated, Require } from "src/auth";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { UsersRole } from "src/auth/types";
+import { ProductDTO } from "../shared/dtos";
 
 @Controller("/products")
 @ApiTags("products")
@@ -28,24 +32,31 @@ export class ProductsController {
 
   @Get("/")
   @AllowUnauthenticated()
-  async listProducts(@Query() query: GetProductsQueryDTO) {
+  async listProducts(
+    @Query() query: GetProductsQueryDTO
+  ): Promise<GetProductsResponseDTO> {
     return await this.productsService.list(query.page);
   }
 
   @Get("/:productId")
   @AllowUnauthenticated()
-  async getProduct(@Param("productId", ParseIntPipe) productId: number) {
+  async getProduct(
+    @Param("productId", ParseIntPipe) productId: number
+  ): Promise<ProductDTO> {
     return await this.productsService.getOne(productId);
   }
 
   @Post("/")
   @Require(UsersRole.COOK)
-  async createProduct(@Body() body: CreateProductBodyDTO) {
-    await this.productsService.register(body);
+  @ApiBearerAuth()
+  async createProduct(@Body() body: CreateProductBodyDTO): Promise<ProductDTO> {
+    return await this.productsService.register(body);
   }
 
   @Put("/:productId/info")
   @Require(UsersRole.COOK)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   async updateProductInfo(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductInfoBodyDTO
@@ -55,6 +66,8 @@ export class ProductsController {
 
   @Put("/:productId/price")
   @Require(UsersRole.COOK)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   async updateProductPrice(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductPriceDTO
@@ -64,6 +77,8 @@ export class ProductsController {
 
   @Put("/:productId/quantity")
   @Require(UsersRole.COOK)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   async updateProductQuantity(
     @Param() param: ProductIdParamDTO,
     @Body() body: UpdateProductQuantityDTO
