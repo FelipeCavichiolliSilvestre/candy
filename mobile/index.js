@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import "react-native-url-polyfill/auto";
 
 import * as React from "react";
 import { AppRegistry } from "react-native";
