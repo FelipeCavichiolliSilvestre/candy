@@ -4,7 +4,8 @@ import { AllowUnauthenticated } from "./decorators";
 import {
   ClientLoginResponseDTO,
   EmployeeLoginResponseDTO,
-  LoginBodyDTO,
+  EmployeeLoginBodyDTO,
+  ClientLoginBodyDTO,
 } from "./dtos";
 import { ApiTags } from "@nestjs/swagger";
 
@@ -16,7 +17,7 @@ export class AuthController {
   @Post("/employees/login")
   @AllowUnauthenticated()
   async employeeLogin(
-    @Body() body: LoginBodyDTO
+    @Body() body: EmployeeLoginBodyDTO
   ): Promise<EmployeeLoginResponseDTO> {
     return this.authService.login(body.username, body.password, "employee");
   }
@@ -24,8 +25,8 @@ export class AuthController {
   @Post("/clients/login")
   @AllowUnauthenticated()
   async clientLogin(
-    @Body() body: LoginBodyDTO
+    @Body() body: ClientLoginBodyDTO
   ): Promise<ClientLoginResponseDTO> {
-    return this.authService.login(body.username, body.password, "client");
+    return this.authService.login(body.email, body.password, "client");
   }
 }

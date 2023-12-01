@@ -1,14 +1,24 @@
 import { Type } from "class-transformer";
-import { IsString, Length } from "class-validator";
+import { IsEmail, IsString, Length } from "class-validator";
 import { LoginOutput } from "../auth.interface";
 import { Client, Employee, EmployeeRole } from "@prisma/client";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class LoginBodyDTO {
+export class EmployeeLoginBodyDTO {
   @Type(() => String)
   @IsString()
   @Length(1, 20)
   public readonly username: string;
+
+  @Type(() => String)
+  @IsString()
+  public readonly password: string;
+}
+
+export class ClientLoginBodyDTO {
+  @Type(() => String)
+  @IsEmail()
+  public readonly email: string;
 
   @Type(() => String)
   @IsString()

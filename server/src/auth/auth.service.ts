@@ -13,7 +13,7 @@ export class AuthService implements IAuthService {
 
   // TODO: Handle errors
   login(
-    username: string,
+    email: string,
     password: string,
     type: "client"
   ): Promise<LoginOutput<Client>>;
@@ -23,15 +23,15 @@ export class AuthService implements IAuthService {
     type: "employee"
   ): Promise<LoginOutput<Employee>>;
   async login(
-    username: string,
+    emailOrUsername: string,
     password: string,
     type: "client" | "employee"
   ): Promise<LoginOutput<Client | Employee>> {
     const isClient = type === "client";
 
     const user = isClient
-      ? await this.findClient(username)
-      : await this.findEmployee(username);
+      ? await this.findClient(emailOrUsername)
+      : await this.findEmployee(emailOrUsername);
     if (user === null) throw new Error("User not found");
 
     const passwordMatches = await bcrypt.compare(password, user.passwordHash);
@@ -57,9 +57,9 @@ export class AuthService implements IAuthService {
     return employee;
   }
 
-  private async findClient(username: string) {
+  private async findClient(email: string) {
     const employee = await this.prisma.client.findUnique({
-      where: { username },
+      where: { email },
     });
 
     return employee;

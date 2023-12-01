@@ -28,6 +28,6 @@ export class ClientsController {
   ): Promise<ClientLoginResponseDTO> {
     await this.clientsService.signUp(body);
 
-    return this.authService.login(body.username, body.password, "client");
+    return this.authService.login(body.email, body.password, "client");
   }
 }

@@ -3,12 +3,12 @@ import { UsersRole } from "./types";
 
 export abstract class IAuthService {
   abstract login(
-    username: string,
+    email: string,
     password: string,
     type: "client"
   ): Promise<LoginOutput<Client>>;
   abstract login(
-    username: string,
+    email: string,
     password: string,
     type: "employee"
   ): Promise<LoginOutput<Employee>>;
