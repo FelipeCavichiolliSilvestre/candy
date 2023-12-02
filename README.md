@@ -2,7 +2,6 @@
 
 ![Version Badge](https://img.shields.io/github/package-json/v/FelipeCavichiolliSilvestre/candy?filename=server%2Fpackage.json&style=for-the-badge)
 ![License Badge](https://img.shields.io/github/license/FelipeCavichiolliSilvestre/candy?style=for-the-badge)
-![Backend Deploy Badge](https://img.shields.io/github/actions/workflow/status/FelipeCavichiolliSilvestre/candy/deploy-nestjs.yml?label=backend%20deploy&style=for-the-badge)
 ![Development Status Badge](https://img.shields.io/badge/status-development-yellow?style=for-the-badge)
 ![Last Commit Badge](https://img.shields.io/github/last-commit/FelipeCavichiolliSilvestre/candy?style=for-the-badge)
 
@@ -21,11 +20,8 @@ Vários dos meus brainstormings podem ser encontrados [nessa lousa](https://app.
 
 <section display="inline-block">
   <img align="center" width="80px" height="65px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-plain.svg" />
-  <img color="white" align="center" width="80px" height="65px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-line.svg" />
+  <img align="center" width="80px" height="65px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" />
   <img align="center" width="80px" height="65px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" />
-  <img align="center" width="80px" height="65px" src="https://github.githubassets.com/images/modules/site/features/actions-icon-actions.svg" />
-  <img align="center" width="80px" height="65px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" />
-  <img align="center" width="80px" height="65px" src="https://raw.githubusercontent.com/FelipeCavichiolliSilvestre/candy/main/icons/stripe.svg" />
 </section>
 
 ---
