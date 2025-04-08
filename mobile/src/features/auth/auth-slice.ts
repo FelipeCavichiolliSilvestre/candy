@@ -24,8 +24,9 @@ export const authSlice = createSlice({
 });
 
 const selectAuthStatus = (state: RootState) => state.auth.status;
+const selectJwt = (state: RootState) => state.auth.user?.jwt ?? null;
 
-export { selectAuthStatus };
+export { selectAuthStatus, selectJwt };
 export { fetchLoggedUser, login, logout, register };
 
 export default authSlice.reducer;

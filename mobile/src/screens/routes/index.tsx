@@ -11,10 +11,10 @@ import {
 import SplashScreen from "../SplashScreen";
 import AuthRoutes from "./AuthRoutes";
 import ProfileScreen from "../ProfileScreen";
+import ProductsScreen from "../ProductsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const Products = () => <Text>Products</Text>;
 const Orders = () => <Text>Orders</Text>;
 const Cart = () => <Text>Cart</Text>;
 
@@ -38,7 +38,7 @@ export default function Routes() {
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Products" component={Products} />
+      <Tab.Screen name="Products" component={ProductsScreen} />
       <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen
